@@ -5,7 +5,7 @@ const { dbConfig } = require('../config');
 const itemsRoutes = express.Router();
 module.exports = itemsRoutes;
 
-// PAIMTI VISUS ITEMUS //
+// PAIMTI VISUS ITEMUS (ARBA TIK 10) //
 
 itemsRoutes.get('/items', async (req, res) => {
   let connection;
@@ -14,7 +14,7 @@ itemsRoutes.get('/items', async (req, res) => {
     connection = await mysql.createConnection(dbConfig);
     console.log('connected');
     // 2 atlikti veiksma
-    const sql = 'SELECT * FROM `items`';
+    const sql = 'SELECT * FROM `items` LIMIT 10';
     const [rows, fields] = await connection.query(sql);
     res.json(rows);
   } catch (error) {
@@ -71,5 +71,26 @@ itemsRoutes.delete('/items/:itemId', async (req, res) => {
     res.sendStatus(500);
   } finally {
     await conn?.end();
+  }
+});
+
+itemsRoutes.get('/items/:limit', async (req, res) => {
+  let connection;
+  try {
+    const { limit } = req.params;
+    connection = await mysql.createConnection(dbConfig);
+    console.log('connected');
+    // 2 atlikti veiksma
+    const sql = 'SELECT * FROM `items` LIMIT ?';
+    const [rows] = await connection.query(sql, [limit]);
+    res.json(rows);
+  } catch (error) {
+    // // err gaudom klaidas
+    console.log('home route error ===', error);
+    res.status(500).json('something went wrong');
+  } finally {
+    // 3 atsijungti
+    if (connection) connection.end();
+    // connection?.close();
   }
 });
