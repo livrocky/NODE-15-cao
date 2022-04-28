@@ -6,9 +6,12 @@ POST http://localhost:3005/api/items
 Content-Type: application/json
 
 {
-    "id": "10",
-    "title": "table"
+    "id": "17",
+    "title": "car"
 }
 
 ###
 DELETE http://localhost:3005/api/items/8
+
+###
+GET http://localhost:3005/api/items/5
