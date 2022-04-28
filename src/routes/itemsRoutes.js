@@ -46,3 +46,30 @@ itemsRoutes.post('/items', async (req, res) => {
     await connection?.end();
   }
 });
+
+// ISTRINTI VIENA ITEMA //
+
+itemsRoutes.delete('/items/:itemId', async (req, res) => {
+  // res.json(req.params.itemId);
+  let conn;
+  try {
+    const { itemId } = req.params;
+    conn = await mysql.createConnection(dbConfig);
+    const sql = 'DELETE FROM items WHERE `id` = 8';
+    const [deleteRezult] = await conn.execute(sql, [itemId]);
+    if (deleteRezult.affectedRows !== 1) {
+      res.status(400).json({ success: false, error: `item with id ${itemId}, was not found` });
+      return;
+    }
+    if (deleteRezult.affectedRows === 1) {
+      res.json('DELETED');
+      return;
+    }
+    throw new Error('sometnig wrong in deleteRezult.affectedRows');
+  } catch (error) {
+    console.log('error DELETE posts', error);
+    res.sendStatus(500);
+  } finally {
+    await conn?.end();
+  }
+});

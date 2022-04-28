@@ -9,3 +9,6 @@ Content-Type: application/json
     "id": "10",
     "title": "table"
 }
+
+###
+DELETE http://localhost:3005/api/items/8
