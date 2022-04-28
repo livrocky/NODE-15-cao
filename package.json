@@ -1,0 +1,28 @@
+{
+  "name": "node-15-cao",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/livrocky/NODE-15-cao.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/livrocky/NODE-15-cao/issues"
+  },
+  "homepage": "https://github.com/livrocky/NODE-15-cao#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "eslint": "^8.14.0",
+    "express": "^4.18.0",
+    "morgan": "^1.10.0",
+    "mysql2": "^2.3.3"
+  }
+}
