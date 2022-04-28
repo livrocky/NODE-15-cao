@@ -5,6 +5,8 @@ const { dbConfig } = require('../config');
 const itemsRoutes = express.Router();
 module.exports = itemsRoutes;
 
+// PAIMTI VISUS ITEMUS //
+
 itemsRoutes.get('/items', async (req, res) => {
   let connection;
   try {
@@ -23,5 +25,24 @@ itemsRoutes.get('/items', async (req, res) => {
     // 3 atsijungti
     if (connection) connection.end();
     // connection?.close();
+  }
+});
+
+// PAPOSTINTI VIENA ITEMA //
+
+itemsRoutes.post('/items', async (req, res) => {
+  let connection;
+  try {
+    const { id, title } = req.body;
+    const connection = await mysql.createConnection(dbConfig);
+    const sql = `INSERT INTO items (id, title) VALUES (?, ?)`;
+    const [rows] = await connection.execute(sql, [id, title]);
+    console.log('connected');
+    res.json(rows);
+  } catch (error) {
+    // // err gaudom klaidas
+    res.status(500).json('error in post items');
+  } finally {
+    await connection?.end();
   }
 });

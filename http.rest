@@ -1,2 +1,11 @@
 ###
 GET http://localhost:3005/api/items
+
+###
+POST http://localhost:3005/api/items
+Content-Type: application/json
+
+{
+    "id": "10",
+    "title": "table"
+}
