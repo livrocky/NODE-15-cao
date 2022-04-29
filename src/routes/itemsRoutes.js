@@ -5,7 +5,7 @@ const { dbConfig } = require('../config');
 const itemsRoutes = express.Router();
 module.exports = itemsRoutes;
 
-// PAIMTI VISUS ITEMUS (ARBA TIK 10) //
+// PAIMTI VISUS ITEMUS (ARBA TIK 10) // (VEIKIA)
 
 // itemsRoutes.get('/items', async (req, res) => {
 //   let connection;
@@ -27,6 +27,24 @@ module.exports = itemsRoutes;
 //     // connection?.close();
 //   }
 // });
+
+// GET route paims ir paduos visus įrašus iš duomenų bazės. Pakoreguokime, kad būtų galime nustatyti limit'ą su search query (t.y. ?limt=10).
+
+itemsRoutes.get('/items', async (req, res) => {
+  let connection;
+  try {
+    const { limit } = req.query;
+    console.log('limit ===', limit);
+    connection = await mysql.createConnection(dbConfig);
+    const sql = 'SELECT * FROM `items` LIMIT ?';
+    const [getItemsWithLimit] = await connection.execute(sql, [limit]);
+    res.json(getItemsWithLimit);
+  } catch (error) {
+    res.status(500).json('error in get items with limit');
+  } finally {
+    await connection?.end();
+  }
+});
 
 // PAPOSTINTI VIENA ITEMA //
 
@@ -55,7 +73,7 @@ itemsRoutes.delete('/items/:itemId', async (req, res) => {
   try {
     const { itemId } = req.params;
     conn = await mysql.createConnection(dbConfig);
-    const sql = 'DELETE FROM items WHERE `id` = 8';
+    const sql = 'DELETE FROM items WHERE `id` = ?';
     const [deleteRezult] = await conn.execute(sql, [itemId]);
     if (deleteRezult.affectedRows !== 1) {
       res.status(400).json({ success: false, error: `item with id ${itemId}, was not found` });
@@ -71,29 +89,5 @@ itemsRoutes.delete('/items/:itemId', async (req, res) => {
     res.sendStatus(500);
   } finally {
     await conn?.end();
-  }
-});
-
-itemsRoutes.get('/items', async (req, res) => {
-  let connection;
-  try {
-    const { limit } = req.query;
-    connection = await mysql.createConnection(dbConfig);
-    const safelimit = mysql.escape(limit);
-    console.log('limit===', limit);
-    console.log('safelimit===', safelimit);
-    // 2 atlikti veiksma
-    const sql = 'SELECT * FROM items LIMIT ?';
-    console.log('sql===', sql);
-    const [rows] = await connection.query(sql, [limit]);
-    res.json(rows);
-  } catch (error) {
-    // // err gaudom klaidas
-    console.log('home route error ===', error);
-    res.status(500).json('something went wrong');
-  } finally {
-    // 3 atsijungti
-    if (connection) connection.end();
-    // connection?.close();
   }
 });
