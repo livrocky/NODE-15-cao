@@ -14,4 +14,4 @@ Content-Type: application/json
 DELETE http://localhost:3005/api/items/8
 
 ###
-GET http://localhost:3005/api/items/5
+GET http://localhost:3005/api/items/?limit=5

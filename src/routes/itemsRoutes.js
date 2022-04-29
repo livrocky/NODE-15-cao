@@ -7,26 +7,26 @@ module.exports = itemsRoutes;
 
 // PAIMTI VISUS ITEMUS (ARBA TIK 10) //
 
-itemsRoutes.get('/items', async (req, res) => {
-  let connection;
-  try {
-    // 1 prisijungti
-    connection = await mysql.createConnection(dbConfig);
-    console.log('connected');
-    // 2 atlikti veiksma
-    const sql = 'SELECT * FROM `items` LIMIT 10';
-    const [rows, fields] = await connection.query(sql);
-    res.json(rows);
-  } catch (error) {
-    // // err gaudom klaidas
-    console.log('home route error ===', error);
-    res.status(500).json('something went wrong');
-  } finally {
-    // 3 atsijungti
-    if (connection) connection.end();
-    // connection?.close();
-  }
-});
+// itemsRoutes.get('/items', async (req, res) => {
+//   let connection;
+//   try {
+//     // 1 prisijungti
+//     connection = await mysql.createConnection(dbConfig);
+//     console.log('connected');
+//     // 2 atlikti veiksma
+//     const sql = 'SELECT * FROM `items` LIMIT 10';
+//     const [rows, fields] = await connection.query(sql);
+//     res.json(rows);
+//   } catch (error) {
+//     // // err gaudom klaidas
+//     console.log('home route error ===', error);
+//     res.status(500).json('something went wrong');
+//   } finally {
+//     // 3 atsijungti
+//     if (connection) connection.end();
+//     // connection?.close();
+//   }
+// });
 
 // PAPOSTINTI VIENA ITEMA //
 
@@ -74,14 +74,17 @@ itemsRoutes.delete('/items/:itemId', async (req, res) => {
   }
 });
 
-itemsRoutes.get('/items/:limit', async (req, res) => {
+itemsRoutes.get('/items', async (req, res) => {
   let connection;
   try {
-    const { limit } = req.params;
+    const { limit } = req.query;
     connection = await mysql.createConnection(dbConfig);
-    console.log('connected');
+    const safelimit = mysql.escape(limit);
+    console.log('limit===', limit);
+    console.log('safelimit===', safelimit);
     // 2 atlikti veiksma
-    const sql = 'SELECT * FROM `items` LIMIT ?';
+    const sql = 'SELECT * FROM items LIMIT ?';
+    console.log('sql===', sql);
     const [rows] = await connection.query(sql, [limit]);
     res.json(rows);
   } catch (error) {
