@@ -48,7 +48,7 @@ itemsRoutes.get('/items', async (req, res) => {
 
 // PAPOSTINTI VIENA ITEMA //
 
-itemsRoutes.post('/items', async (req, res) => {
+itemsRoutes.post('/items/post', async (req, res) => {
   let connection;
   try {
     const { id, title } = req.body;

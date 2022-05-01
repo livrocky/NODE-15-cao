@@ -2,16 +2,16 @@
 GET http://localhost:3005/api/items
 
 ###
-POST http://localhost:3005/api/items
+POST http://localhost:3005/api/items/post
 Content-Type: application/json
 
 {
-    "id": "17",
-    "title": "car"
+    "id": "26",
+    "title": "keyboard"
 }
 
 ###
-DELETE http://localhost:3005/api/items/3
+DELETE http://localhost:3005/api/items/26
 
 ###
-GET http://localhost:3005/api/items/?limit=2
+GET http://localhost:3005/api/items/?limit=5
